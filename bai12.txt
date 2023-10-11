@@ -1,0 +1,20 @@
+void bfs(vector<vector<int>> graph, int start) {
+	vector<bool> visit(graph.size(),false);
+    queue<int> q;
+    q.push(start);
+    visit[start]=true;
+    cout<<start;
+    while(!q.empty()){
+        int node=q.front();
+        if(node!=start) cout<<" "<<node;
+        q.pop();
+        for(auto n:graph[node]){
+            if(visit[n]==false){
+                q.push(n);
+                visit[n]=true;
+            }
+        }
+
+    }
+ 
+}

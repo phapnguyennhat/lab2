@@ -1,0 +1,32 @@
+bool canEatFood(int maze[5][5], int fx, int fy)
+{
+    
+    if (maze[fx][fy] == 0)
+        return false;
+    int xAxis[] = {0, 1, 0, -1};
+    int yAxis[] = {1, 0, -1, 0};
+    stack<int> x;
+    stack<int> y;
+    x.push(0);
+    y.push(0);
+    while (!x.empty())
+    {
+        maze[x.top()][y.top()]=false;
+        int xtop=x.top();
+        int ytop=y.top();
+        if(xtop==fx && ytop==fy) return true;
+        x.pop();
+        y.pop();
+        for (int i=0;i<4;i++){
+            int xCoor=xAxis[i]+xtop;
+            int yCoor=yAxis[i]+ ytop;
+            if(xCoor>=0 && xCoor<5 && yCoor>=0 && yCoor<5 && maze[xCoor][yCoor]){
+
+                x.push(xCoor);
+                y.push(yCoor);
+            }
+        }
+
+    }
+    return false;
+}

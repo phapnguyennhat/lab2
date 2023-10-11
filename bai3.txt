@@ -1,0 +1,101 @@
+/*
+ * TODO: Implement class Iterator's method
+ * Note: method remove is different from SLinkedList, which is the advantage of DLinkedList
+ */
+template <class T>
+DLinkedList<T>::Iterator::Iterator(DLinkedList<T> *pList, bool begin) 
+{
+    this->pList=pList;
+    if(begin){
+        current= pList? pList->head:nullptr;
+        index= pList? 0:-1;
+    }
+    else{
+        current=nullptr;
+        index= pList? pList->size(): -1;
+    }
+    
+}
+
+template <class T>
+typename DLinkedList<T>::Iterator& DLinkedList<T>::Iterator::operator=(const DLinkedList<T>::Iterator &iterator)
+{
+    this->pList=iterator.pList;
+    this->current=iterator.current;
+    this->index=iterator.index;
+    return *this;
+}
+
+template <class T> 
+void DLinkedList<T>::Iterator::set(const T &e)
+{
+    if(current){
+        current->data=e;
+    }
+}
+
+template<class T>
+T& DLinkedList<T>::Iterator::operator*() 
+{
+    if(current){
+        return current->data;
+    }
+    throw std::out_of_range("Iterator out of range");
+
+}
+
+template<class T>
+void DLinkedList<T>::Iterator::remove() 
+{
+    /*
+    * TODO: delete Node in pList which Node* current point to. 
+    *       After that, Node* current point to the node before the node just deleted.
+    *       If we remove first node of pList, Node* current point to nullptr.
+    *       Then we use operator ++, Node* current will point to the head of pList.
+    */
+    if (this->current == nullptr) throw std::out_of_range("Segmentation fault!");
+
+    if(index==0){
+        pList->removeAt(0);
+        current=NULL;
+        index=-1;
+        
+    }
+    else{
+        pList->removeAt(index);
+        current=current->previous;
+        this->index=index-1;
+    }
+}
+
+template<class T>
+bool DLinkedList<T>::Iterator::operator!=(const DLinkedList::Iterator &iterator) 
+{
+    return current!=iterator.current;
+}
+
+template<class T>
+typename DLinkedList<T>::Iterator& DLinkedList<T>::Iterator::operator++() 
+{
+    // prefix;
+    if(current){
+        current=current->next;
+        index++;
+    }
+    else{
+        current=pList->head;
+        index=0;
+    }
+    return *this;
+        
+}
+
+template<class T>
+typename DLinkedList<T>::Iterator DLinkedList<T>::Iterator::operator++(int) 
+{
+    // postfix;
+    Iterator tmp=*this;
+    ++ (*this);
+    return tmp;
+}
+

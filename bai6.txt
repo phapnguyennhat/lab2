@@ -1,0 +1,24 @@
+int baseballScore(string ops){
+/*TODO*/
+    stack<int> st;
+    for(unsigned int i=0;i<ops.size();i++){
+        if(ops[i]>='0'&&ops[i]<='9') st.push(ops[i]-'0');
+        if(ops[i]=='C'){
+            st.pop();
+        }
+        if(ops[i]=='D') st.push(st.top()*2);
+        if(ops[i]=='+'){
+            int b=st.top();
+            st.pop();
+            int sum=st.top()+b;
+            st.push(b);
+            st.push(sum);
+        }
+    }
+    int sum=0;
+    while(!st.empty()){
+        sum+=st.top();
+        st.pop();
+    }
+    return sum;
+}

@@ -1,0 +1,24 @@
+bool isValidParentheses (string s){
+    stack<char> st;
+    for(auto c:s){
+        if(c=='('||c=='['||c=='{') st.push(c);
+        else{
+            // ngoac dong
+            if(c==')'){
+                if(st.empty() || st.top()!='(') return false;
+                st.pop();
+            }
+            if(c==']'){
+                if(st.empty() || st.top()!='[') return false;
+                st.pop();
+            }
+            if(c=='}'){
+                if(st.empty() || st.top()!='{') return false;
+                st.pop();
+            }
+            
+        }
+    }
+    if(!st.empty()) return false;
+    return true;
+}

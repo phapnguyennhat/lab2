@@ -1,0 +1,50 @@
+template <class T>
+void DLinkedList<T>::add(const T& e) {
+    /* Insert an element into the end of the list. */
+    Node* newNode=new Node(e);
+    count++;
+    if(head==NULL){
+        head=newNode;
+        tail=newNode;
+    }
+    else{
+        tail->next=newNode;
+        newNode->previous=tail;
+        tail=newNode;
+    }
+}
+
+template<class T>
+void DLinkedList<T>::add(int index, const T& e) {
+    /* Insert an element into the list at given index. */ 
+    
+    Node* newNode=new Node(e);
+    if(index>=count||head==NULL){
+        add(e);
+    }
+    else if(index<=0){
+        newNode->next=head;
+        head->previous=newNode;
+        head=newNode;
+        count++;
+    }
+    else{
+        Node*tmp=head;
+        for(int i=1;i<index;i++){
+            tmp=tmp->next;
+        }
+        newNode->previous=tmp;
+        newNode->next=tmp->next;
+        tmp->next->previous=newNode;
+        tmp->next=newNode;
+        count++;
+    }
+}
+
+template<class T>
+int DLinkedList<T>::size() {
+    /* Return the length (size) of list */ 
+    if(head==NULL) return 0;
+    return count;
+    
+}

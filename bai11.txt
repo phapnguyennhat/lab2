@@ -1,0 +1,20 @@
+void interleaveQueue(queue<int>& q){
+    queue<int> firstHalf;
+    queue<int> secondHalf;
+    int n=q.size()/2;
+    for(int i=0;i<n;i++){
+        firstHalf.push(q.front());
+        q.pop();
+    }
+    for(int i=0;i<n;i++){
+        secondHalf.push(q.front());
+        q.pop();
+    }
+    
+    while(!firstHalf.empty()||!secondHalf.empty()){
+        q.push(firstHalf.front());
+        q.push(secondHalf.front());
+        firstHalf.pop();
+        secondHalf.pop();
+    }
+}
