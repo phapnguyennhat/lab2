@@ -1,0 +1,55 @@
+// You must use the nodes in the original list and must not modify ListNode's val attribute. 
+// Hint: You should complete the function mergeLists first and validate it using our first testcase example
+
+// Merge two sorted lists
+ListNode* mergeLists(ListNode* a, ListNode* b) {
+    ListNode* head=new ListNode();
+    if(a->val<b->val){
+        head=a;
+        a=a->next;
+        head->next=NULL;
+    }
+    else{
+        head=b;
+        b=b->next;
+        head->next=NULL;
+    }
+    ListNode* tmp=head;
+    while(a!=NULL&&b!=NULL){
+        if(a->val<b->val){
+            tmp->next=a;
+            a=a->next;
+            tmp=tmp->next;
+            tmp->next=NULL;
+        }
+        else{
+            tmp->next=b;
+            b=b->next;
+            tmp=tmp->next;
+            tmp->next=NULL;
+        }
+    }
+    if(a!=NULL) tmp->next=a;
+    if(b!=NULL) tmp->next=b;
+    return head;
+}
+
+// Sort and unsorted list given its head pointer
+ListNode* mergeSortList(ListNode* head) {
+    if(head==NULL||head->next==NULL) return head;
+    ListNode* midNode=head;
+    ListNode* pos=head->next;
+    while(pos!=NULL){
+        pos=pos->next;
+        if(pos!=NULL){
+            midNode=midNode->next;
+            pos=pos->next;
+        }
+    }
+    ListNode* secondList=midNode->next;
+    midNode->next=NULL;
+    ListNode* first=mergeSortList(head);
+    ListNode* second=mergeSortList(secondList);
+    return mergeLists(first,second);
+    
+}

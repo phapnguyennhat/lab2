@@ -1,0 +1,29 @@
+int sumDigitPath(BTNode* root) {
+    if(root==NULL) return 0;
+    stack<BTNode*> stNode;
+    stNode.push(root);
+    stack<int> stSum;
+    stSum.push(root->val);
+    long long sum=0;
+    BTNode* stNodeFront;
+    int stSumFront;
+    while(!stNode.empty()){
+        stNodeFront=stNode.top();
+        stSumFront=stSum.top();
+        stNode.pop();
+        stSum.pop();
+        if(stNodeFront->left!=NULL){
+            stNode.push(stNodeFront->left);
+            stSum.push((stSumFront*10+stNodeFront->left->val)%27022001);
+        }
+        if(stNodeFront->right!=NULL){
+            stNode.push(stNodeFront->right);
+            stSum.push((stSumFront*10+stNodeFront->right->val)%27022001);
+        }
+        else if(stNodeFront->left==NULL&&stNodeFront->right==NULL){
+            
+            sum+=stSumFront;
+        }
+    }
+    return sum%27022001;
+}

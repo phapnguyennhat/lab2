@@ -1,0 +1,46 @@
+int longestPathSum(BTNode* root) {
+    stack<BTNode*> stNode;
+    stNode.push(root);
+    stack<int> stSum;
+    stSum.push(root->val);
+    stack<int> stSize;
+    stSize.push(1);
+    BTNode* stNodeFront;
+    int stSumFront;
+    int stSizeFront;
+    
+    int maxSum=0;
+    int maxSize=0;
+    
+    // int size=0;
+    while(!stNode.empty()){
+        stSumFront=stSum.top();
+        stNodeFront=stNode.top();
+        stSizeFront=stSize.top();
+        stNode.pop();
+        stSum.pop();
+        stSize.pop();
+        if(stNodeFront!=NULL){
+            if(stNodeFront->left!=NULL){
+                stSum.push(stSumFront+stNodeFront->left->val);
+                stSize.push(stSizeFront+1);
+                stNode.push(stNodeFront->left);
+            }
+            if(stNodeFront->right!=NULL){
+                stSum.push(stSumFront+stNodeFront->right->val);
+                stSize.push(stSizeFront+1);
+                stNode.push(stNodeFront->right);
+            }
+            else if (stNodeFront->left==NULL&&stNodeFront->right==NULL){
+                if(stSizeFront>maxSize){
+                    maxSize=stSizeFront;
+                    maxSum=stSumFront;
+                }
+                else if(stSizeFront==maxSize&&maxSum<stSumFront){
+                    maxSum=stSumFront;
+                }
+            }
+        }
+    }
+    return maxSum;
+}

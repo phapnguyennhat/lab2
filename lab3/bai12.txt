@@ -1,0 +1,22 @@
+int kthSmallest(BSTNode* root, int k) {
+    // STUDENT ANSWER
+    vector<int> v;
+    stack<BSTNode*> st;
+    st.push(root);
+    BSTNode* stfront=NULL;
+    while(!st.empty()){
+        stfront=st.top();
+        st.pop();
+        if(stfront!=NULL){
+            v.push_back(stfront->val);
+            if(stfront->left!=NULL){
+                st.push(stfront->left);
+            }
+            if(stfront->right!=NULL){
+                st.push(stfront->right);
+            }
+        }
+    }
+    sort(v.begin(),v.end());
+    return v[k-1];
+}

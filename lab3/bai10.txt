@@ -1,0 +1,12 @@
+//Helping functions
+int sumOfLeafsRecur(Node* r){
+    if(r==NULL) return 0;
+    if(r->pLeft==NULL&&r->pRight==NULL) return r->value;
+    return sumOfLeafsRecur(r->pLeft)+sumOfLeafsRecur(r->pRight);
+    
+}
+
+int sumOfLeafs(){
+    //TODO
+    return sumOfLeafsRecur(root);
+}

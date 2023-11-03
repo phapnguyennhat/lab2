@@ -17,5 +17,4 @@ vector<int> nextGreater(vector<int>& arr){
         st.push(arr[i]);
     }
     return res;
-    
 }

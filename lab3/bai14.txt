@@ -1,0 +1,28 @@
+// STUDENT ANSWER BEGIN
+// You can define other functions here to help you.
+bool findRecur(Node* root,T i){
+    if (root==NULL) return false;
+    if(i==root->value) return true;
+    if(i<root->value) return findRecur(root->pLeft,i);
+    else if(i>root->value) return findRecur(root->pRight,i);
+    return false;
+}
+T sumRecur(Node* root,T l,T r){
+    if(root==NULL) return 0;
+    if(root->value>=l&&root->value<=r) return root->value+sumRecur(root->pLeft,l,r)+sumRecur(root->pRight,l,r);
+    else if(root->value<l) return sumRecur(root->pRight,l,r);
+    else if(root->value>r) return sumRecur(root->pLeft,l,r);
+    return 0;
+}
+
+bool find(T i) {
+    // TODO: return true if value i is in the tree; otherwise, return false.
+    return findRecur(root,i);
+}
+
+T sum(T l, T r) {
+    // TODO: return the sum of all element in the tree has value in range [l,r].
+    return sumRecur(root,l,r);
+}
+
+// STUDENT ANSWER END

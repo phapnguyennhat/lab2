@@ -1,0 +1,62 @@
+//Helping functions
+Node* addRecur(Node* root,T value){
+    if(root==NULL) return new Node(value);
+    if(value<=root->value){
+        root->pLeft=addRecur(root->pLeft,value);
+    }
+    else if(value>root->value){
+        root->pRight=addRecur(root->pRight,value);
+    }
+    return root;
+}
+Node* deleteNodeRecur(Node* root,T value){
+    if(root==NULL) return root;
+    if(value<root->value){
+        root->pLeft=deleteNodeRecur(root->pLeft,value);
+        return root;
+    }
+    else if(value>root->value){
+        root->pRight=deleteNodeRecur(root->pRight,value);
+        return root;
+    }
+    if(root->pLeft==NULL){
+        Node* tmp=root->pRight;
+        delete root;
+        return tmp;
+    }
+    else if(root->pRight==NULL){
+        Node* tmp=root->pLeft;
+        delete root;
+        return tmp;
+    }
+    else{
+        Node* succParent=root;
+        Node* succ=root->pRight;
+        while(succ->pLeft!=NULL){
+            succParent=succ;
+            succ=succ->pLeft;
+        }
+        if(succParent!=root){
+            succParent->pLeft=succ->pRight;
+        }
+        else{
+            succParent->pRight=succ->pRight;
+        }
+        
+        root->value=succ->value;
+        succ->pLeft=NULL;
+        succ->pRight=NULL;
+        delete succ;
+        return root;
+    }
+}
+
+void add(T value){
+    //TODO
+   root= addRecur(root,value);
+}
+
+void deleteNode(T value){
+    //TODO
+    root=deleteNodeRecur(root,value);
+}

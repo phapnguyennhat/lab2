@@ -1,0 +1,55 @@
+// STUDENT ANSWER BEGIN
+// You can define other functions here to help you.
+int getHeightRecur(Node* r){
+    if(r==NULL) return 0;
+    if(r->pLeft==NULL && r->pRight==NULL) return 1;
+    return max(1+getHeightRecur(r->pLeft),1+getHeightRecur(r->pRight));
+}
+void preOrderRecur(string &res,Node*r){
+    if(r==NULL) return;
+    res=res+to_string(r->value)+" ";
+    preOrderRecur(res,r->pLeft);
+    preOrderRecur(res,r->pRight);
+    
+}
+void inOrderRecur(string &res,Node*r){
+    if (r==NULL) return;
+    inOrderRecur(res,r->pLeft);
+    res=res+to_string(r->value)+" ";
+    inOrderRecur(res,r->pRight);
+}
+void postOrderRecur(string &res,Node* r){
+    if(r==NULL) return;
+    postOrderRecur(res,r->pLeft);
+    postOrderRecur(res,r->pRight);
+    res=res+to_string(r->value)+" ";
+}
+
+int getHeight() {
+    // TODO: return height of the binary tree.
+    return getHeightRecur(root);
+    
+}
+
+string preOrder() {
+    // TODO: return the sequence of values of nodes in pre-order.
+    string res="";
+    preOrderRecur(res,root);
+    return res;
+}
+
+string inOrder() {
+    // TODO: return the sequence of values of nodes in in-order.
+    string res="";
+    inOrderRecur(res,root);
+    return res;
+}
+
+string postOrder() {
+    // TODO: return the sequence of values of nodes in post-order.
+    string res="";
+    postOrderRecur(res,root);
+    return res;
+}
+
+// STUDENT ANSWER END

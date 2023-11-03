@@ -12,7 +12,7 @@ using namespace std;
 #include <string>
 #include <algorithm>
 #include <cstring>
-#include <math.h>
+// #include <math.h>
 
 void printPattern(int n)
 {
@@ -456,6 +456,7 @@ int secondsToBeRotten(vector<vector<int>>& grid) {
                 x.push(xCoor);
                 y.push(yCoor);
                 countFresh--;
+                countRotNext++;
             }
         }
         x.pop();
@@ -495,15 +496,50 @@ int sumOfMaxSubarray(vector<int>& nums, int k) {
 }
 
 
+static int* Partition(int* start, int* end) {
+    // TODO: return the pointer which points to the pivot after rearrange the array.
+    int* i=start+1;
+    int* j=end-1;
+    int index=end-start-1;
+    int tag=*start;
+    do{
+        while(i<=j && *i<=tag) i++;
+        while(i<=j && *j>=tag){
+            j--;
+            index--;
+        }
+        if(i<=j){
+            swap(*i,*j);
+            i++;
+            j--;
+            index--;
+            
+        }
+    }while(i<=j);
+    swap(*j,*start);
+    cout<<index<<" ";
+    return j;
+}
+
+static void QuickSort(int* start, int* end) {
+    // TODO
+    // In this question, you must print out the index of pivot in subarray after everytime calling method Partition.
+    if(end-start<1) return  ;
+    int* pivot=Partition(start,end);
+    QuickSort(start,pivot);
+    QuickSort(pivot+1,end);
+}
+
+
+
 
 int main()
 {
-    int n;
-    cin>>n;
-    vector<int> v(n);
-    for(int i=0;i<n;i++){
-        cin>>v[i];
-    }
-    cout<<sumOfMaxSubarray(v,3);
-   
+    int array[] = {3, 5, 7, 10, 12, 14, 15, 13, 1, 2, 9, 6, 4, 8, 11, 16, 17, 18, 20, 19};
+    cout << "Index of pivots: ";
+    QuickSort(&array[0], &array[20]);
+    cout << "\n";
+    cout << "Array after sorting: ";
+    for (int i : array)
+        cout << i << " ";
 }

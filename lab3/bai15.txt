@@ -1,0 +1,22 @@
+// STUDENT ANSWER BEGIN
+// You can define other functions here to help you.
+
+T getMin() {
+    //TODO: return the minimum values of nodes in the tree.
+    Node* tmp=root;
+    while(tmp->pLeft!=NULL){
+        tmp=tmp->pLeft;
+    }
+    return tmp->value;
+}
+
+T getMax() {
+    //TODO: return the maximum values of nodes in the tree.
+    Node* tmp=root;
+    while(tmp->pRight!=NULL){
+        tmp=tmp->pRight;
+    }
+    return tmp->value;
+}
+
+// STUDENT ANSWER END
