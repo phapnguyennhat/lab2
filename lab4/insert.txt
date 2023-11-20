@@ -1,0 +1,117 @@
+void rotateLeft(Node*&root){
+    Node* right_tree=root->pRight;
+    root->pRight=right_tree->pLeft;
+    right_tree->pLeft=root;
+    root=right_tree;
+}
+void rotateRight(Node*&root){
+    Node* left_tree=root->pLeft;
+    root->pLeft=left_tree->pRight;
+    left_tree->pRight=root;
+    root=left_tree;
+}
+void right_balance(Node* & root){
+    Node* right_tree=root->pRight;
+    if(right_tree->balance==RH){
+        root->balance=EH;
+        right_tree->balance=EH;
+        rotateLeft(root);
+    }
+    if(right_tree->balance==LH){
+        Node* sub_tree=right_tree->pLeft;
+        if(sub_tree->balance==EH){
+            root->balance=EH;
+            right_tree->balance=EH;
+        }
+        else if(sub_tree->balance==LH){
+            right_tree->balance=RH;
+            root->balance=EH;
+        }
+        else if(sub_tree->balance==RH){
+            right_tree->balance=EH;
+            root->balance=LH;
+        }
+        sub_tree->balance=EH;
+        rotateRight(root->pRight);
+        rotateLeft(root);
+    }
+    
+}
+void left_balance(Node* & root){
+    Node* left_tree=root->pLeft;
+    if(left_tree->balance==LH){
+        root->balance=EH;
+        left_tree->balance=EH;
+        rotateRight(root);
+    }
+    else if(left_tree->balance==RH){
+        Node* sub_tree=left_tree->pRight;
+        if(sub_tree->balance==EH){
+            left_tree->balance=EH;
+            root->balance=EH;
+        }
+        else if(sub_tree->balance==LH){
+            left_tree->balance=EH;
+            root->balance=RH;
+        }
+        else{
+            root->balance=EH;
+            left_tree->balance=LH;
+        }
+        sub_tree->balance=EH;
+        rotateLeft(root->pLeft);
+        rotateRight(root);
+    }
+    
+}
+
+void insertRecur(Node* &root, const T & value, bool & taller){
+    if(root==NULL){
+        root=new Node(value);
+        taller=true;
+    }
+    
+    else if(value<root->data){
+        insertRecur(root->pLeft,value,taller);
+        if(taller==true){
+            if(root->balance==LH){
+                // can bang ben trai
+                left_balance(root);
+                taller=false;
+            }
+            else if(root->balance==EH){
+                root->balance=LH;
+            }
+            else{
+                root->balance=EH;
+                taller=false;
+            }
+        }
+    }
+    else{
+        insertRecur(root->pRight,value,taller);
+        if(taller==true){
+            if(root->balance==RH){
+                // can bang ben phai
+                right_balance(root);
+                taller= false;
+            }
+            else if(root->balance==EH){
+                root->balance=RH;
+            }
+            else{
+                root->balance=EH;
+                taller=false;
+            }
+        }
+    }
+}
+
+void insert(const T &value){
+    //TODO
+    // balance
+    // l-l
+    // r-l
+    bool taller=true;
+    insertRecur(root, value, taller);
+}

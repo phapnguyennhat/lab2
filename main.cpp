@@ -1,545 +1,340 @@
 #include <iostream>
-#include <list>
-#include <vector>
-#include <stack>
-#include <queue>
-#include <set>
 #include <math.h>
 #include <queue>
 using namespace std;
-#include <string>
-#include <iomanip>
-#include <string>
-#include <algorithm>
-#include <cstring>
-// #include <math.h>
+#define SEPARATOR "#<ab@17943918#@>#"
 
-void printPattern(int n)
+enum BalanceValue
 {
-    /*
-     * STUDENT ANSWER
-     */
+  LH = -1,
+  EH = 0,
+  RH = 1
+};
 
-    if (n > 0)
-    {
-        cout << n << " ";
-        printPattern(n - 5);
-        cout << " " << n;
-    }
-    else if (n <= 0)
-    {
-        cout << n;
-    }
-}
-void printArray(int n)
+void printNSpace(int n)
 {
-    /*
-     * STUDENT ANSWER
-     */
-    if (n == 0)
-        cout << n;
-    else if (n < 0)
-        return;
-    else if (n > 0)
-    {
-        printArray(n - 1);
-        cout << ", " << n;
-    }
+  for (int i = 0; i < n - 1; i++)
+    cout << " ";
 }
 
-bool isPalindrome(string str)
+void printInteger(int &n)
 {
-    if (str[0] == ' ')
-        str.erase(0, 1);
-    if (str[str.size() - 1] == ' ')
-        str.erase(str.size() - 1, 1);
-    if (str[0] != str[str.size() - 1])
-        return false;
-    if (str.size() == 1 || str.size() == 0)
-        return true;
-    str.erase(0, 1);
-    str.erase(str.size() - 1, 1);
-    return isPalindrome(str);
+  cout << n << " ";
 }
-string mutil(string str, string word, int n)
-{
-    if (n == 0)
-        return str;
-    str += word;
-    return mutil(str, word, --n);
-}
-
-string expand(string s)
-{
-    int l;
-    int r;
-    if (s.find(')') == string::npos)
-        return s;
-    r = s.find(')');
-    string subs = "";
-    subs = s.substr(0, r + 1);
-    l = subs.find_last_of('(');
-
-    int num = s[l - 1] - '0';
-    string word = s.substr(l + 1, r - 1 - l);
-    string str = "";
-    str = mutil(str, word, num);
-    s.replace(l - 1, r - l + 2, str);
-    return expand(s);
-}
-
-int power(int a, int b)
-{
-    if (b == 0)
-        return 1;
-    if (b == 1)
-        return a;
-    return a * power(a, --b);
-}
-int myArrayToInt(char *str, int n)
-{
-    /*
-     * STUDENT ANSWER
-     */
-    if (n == 1)
-        return str[0] - '0';
-    return (str[0] - '0') * power(10, n - 1) + myArrayToInt(str + 1, --n);
-}
-int buyCar(int *nums, int length, int k)
-{
-    int res = 0;
-    for (int i = 0; i < length; i++)
-    {
-        for (int j = i + 1; j < length; j++)
-        {
-            if (nums[i] > nums[j])
-                swap(nums[i], nums[j]);
-        }
-    }
-    int sum = 0;
-    for (int i = 0; i < length; i++)
-    {
-        sum += nums[i];
-        if (sum <= k)
-            res++;
-        if (sum >= k)
-            break;
-    }
-    return res;
-}
-
-// int longestSublist(vector<string> &words)
-// {
-//     // STUDENT ANSWER
-//     int max = 0;
-//     words.push_back("@");
-//     for (int i = 0; i < words.size(); i++)
-//     {
-//         int len = 0;
-//         for (int j = i; j < words.size(); j++)
-//         {
-//             if (words[i][0] == words[j][0])
-//                 len++;
-//             else
-//             {
-//                 if (len > max)
-//                     max = len;
-//                 break;
-//             }
-//         }
-//     }
-//     return max;
-// }
 
 template <class T>
-class ArrayList
+class AVLTree
 {
-protected:
-    T *data;      // dynamic array to store the list's items
-    int capacity; // size of the dynamic array
-    int count;    // number of items stored in the array
 public:
-    ArrayList()
+  class Node;
+
+private:
+  Node *root;
+
+protected:
+  int getHeightRec(Node *node)
+  {
+    if (node == NULL)
+      return 0;
+    int lh = this->getHeightRec(node->pLeft);
+    int rh = this->getHeightRec(node->pRight);
+    return (lh > rh ? lh : rh) + 1;
+  }
+
+public:
+  AVLTree() : root(nullptr) {}
+  ~AVLTree() {}
+  int getHeight()
+  {
+    return this->getHeightRec(this->root);
+  }
+  void printTreeStructure()
+  {
+    int height = this->getHeight();
+    if (this->root == NULL)
     {
-        capacity = 5;
+      cout << "NULL\n";
+      return;
+    }
+    queue<Node *> q;
+    q.push(root);
+    Node *temp;
+    int count = 0;
+    int maxNode = 1;
+    int level = 0;
+    int space = pow(2, height);
+    printNSpace(space / 2);
+    while (!q.empty())
+    {
+      temp = q.front();
+      q.pop();
+      if (temp == NULL)
+      {
+        cout << " ";
+        q.push(NULL);
+        q.push(NULL);
+      }
+      else
+      {
+        cout << temp->data;
+        q.push(temp->pLeft);
+        q.push(temp->pRight);
+      }
+      printNSpace(space);
+      count++;
+      if (count == maxNode)
+      {
+        cout << endl;
         count = 0;
-        data = new T[5];
+        maxNode *= 2;
+        level++;
+        space /= 2;
+        printNSpace(space / 2);
+      }
+      if (level == height)
+        return;
     }
-    ~ArrayList() { delete[] data; }
-    void add(T e)
+  }
+  // Helping functions
+  Node* rotateLeft(Node *&root)
+  {
+    Node *right_tree = root->pRight;
+    root->pRight = right_tree->pLeft;
+    right_tree->pLeft = root;
+    root = right_tree;
+    return root;
+  }
+  Node* rotateRight(Node *&root)
+  {
+    Node *left_tree = root->pLeft;
+    root->pLeft = left_tree->pRight;
+    left_tree->pRight = root;
+    root = left_tree;
+    return root;
+  }
+  void right_balance(Node *&root)
+  {
+    Node *right_tree = root->pRight;
+    if (right_tree->balance == RH)
     {
-        if (count == capacity)
-        {
-            ensureCapacity(capacity);
-        }
-        data[count] = e;
-        count++;
+      root->balance = EH;
+      right_tree->balance = EH;
+      root=rotateLeft(root);
     }
-    void add(int index, T e)
+    else if (right_tree->balance == LH)
     {
-        if (count == capacity)
-        {
-            ensureCapacity(capacity);
-        }
-        if (index < 0 || index > count)
-        {
-            throw std::out_of_range("the input index is out of range!");
-        }
-        else
-        {
-            if (index == count)
-            {
-                data[index] = e;
-                count++;
-            }
-            else
-            {
-                for (int i = count; i > index; i--)
-                {
-                    data[i] = data[i - 1];
-                }
-                data[index] = e;
-                count++;
-            }
-        }
+      Node *sub_tree = right_tree->pLeft;
+      if (sub_tree->balance == EH)
+      {
+        root->balance = EH;
+        right_tree->balance = EH;
+      }
+      else if (sub_tree->balance == LH)
+      {
+        right_tree->balance = RH;
+        root->balance = EH;
+      }
+      else if (sub_tree->balance == RH)
+      {
+        right_tree->balance = EH;
+        root->balance = LH;
+      }
+      sub_tree->balance = EH;
+      root->pRight=rotateRight(root->pRight);
+      root=rotateLeft(root);
     }
-    int size()
+    else if (right_tree->balance == EH && right_tree->pLeft != NULL && right_tree->pRight != NULL)
     {
-        return count++;
+      root->balance=RH;
+      right_tree->balance=LH;
+      root=rotateLeft(root);
     }
-
-    void ensureCapacity(int cap)
+  }
+  void left_balance(Node *&root)
+  {
+    Node *left_tree = root->pLeft;
+    if (left_tree->balance == LH)
     {
-        if (cap == capacity)
-        {
-            int size = capacity * 1.5;
-            T *arr = data;
-            data = new T[size];
-            for (int i = 0; i < count; i++)
-            {
-                data[i] = arr[i];
-            }
-            capacity *= 1.5;
-            delete[] arr;
-        }
+      root->balance = EH;
+      left_tree->balance = EH;
+      root=rotateRight(root);
     }
-    void print()
+    else if (left_tree->balance == RH)
     {
-        for (int i = 0; i < count; i++)
-        {
-            cout << data[i] << " ";
+      Node *sub_tree = left_tree->pRight;
+      if (sub_tree->balance == EH)
+      {
+        left_tree->balance = EH;
+        root->balance = EH;
+      }
+      else if (sub_tree->balance == LH)
+      {
+        left_tree->balance = EH;
+        root->balance = RH;
+      }
+      else
+      {
+        root->balance = EH;
+        left_tree->balance = LH;
+      }
+      sub_tree->balance = EH;
+      root->pLeft=rotateLeft(root->pLeft);
+      root=rotateRight(root);
+    }
+    else if(left_tree->balance==EH&&left_tree->pLeft!=NULL&&left_tree->pRight!=NULL){
+      root->balance=LH;
+      left_tree->balance=RH;
+      root=rotateRight(root);
+    }
+  }
+  // Helping functions
+  Node* maxValueNode(Node* root){
+    while(root->pRight!=NULL){
+      root=root->pRight;
+    }
+    return root;
+  }
+  Node* removeRecur(Node* root,const T& value,bool& shorter){
+    if(root==NULL){
+      shorter=false;
+      return root;
+    }
+    else if(value<root->data){
+      root->pLeft=removeRecur(root->pLeft,value,shorter);
+      if(shorter==true){
+        // xoa trai
+        if(root->balance==RH){
+          right_balance(root);
+          shorter=false;
         }
+        else if(root->balance==EH){
+          root->balance=RH;
+          shorter=false;
+        }
+        else{
+          root->balance=EH;
+        }
+      }
+    }
+    else if(value>root->data){
+      root->pRight=removeRecur(root->pRight,value,shorter);
+      if(shorter==true){
+        if(root->balance==LH){
+          left_balance(root);
+          shorter=false;
+        }
+        else if(root->balance==EH){
+          root->balance=LH;
+          shorter=false;
+        }
+        else{
+          root->balance=EH;
+        }
+      }
+    }
+    else{
+      if(root->pLeft==NULL){
+        shorter=true;
+        Node* tmp=root->pRight;
+        delete root;
+        return tmp;
+      }
+      else if(root->pRight==NULL){
+        shorter=true;
+        Node* tmp=root->pLeft;
+        delete root;
+        return tmp;
+      }
+      else{
+        Node* tmp=maxValueNode(root->pLeft);
+        root->data=tmp->data;
+        root->pLeft=removeRecur(root->pLeft,tmp->data,shorter);
+      }
+    }
+    return root;
+  }
+void insertRecur(Node* &root, const T & value, bool & taller){
+    if(root==NULL){
+        root=new Node(value);
+        taller=true;
     }
     
-};
-int longestSublist(vector<string>& words) {
-    // STUDENT ANSWER
-    int arr[26] = {0};
-    for(int i=0;i<words.size();i++){
-        arr[int(words[i][0])-97]++;
-        cout<<int(words[i][0])-97<<" ";
-    }
-    
-    int max = 0;
-    for(int i=0;i<26;i++){
-        if(arr[i]>max) max=arr[i];
-    }
-    return max;
-}
-
-
-// template <class T>
-// SLinkedList<T>::Iterator::Iterator(SLinkedList<T>* pList, bool begin)
-// {
-    //             this->pList = pList;
-    //             if (begin) {
-    //                 this->current = pList ? pList->head : nullptr;
-    //                 this->index = pList ? 0 : -1;
-    //             } else {
-    //                 this->current = nullptr;
-    //                 this->index = pList ? pList->size() : -1;
-    //             }
-    // }
-
-// template <class T>
-// typename SLinkedList<T>::Iterator &SLinkedList<T>::Iterator::operator=(const Iterator &iterator)
-// {
-//     this->pList = iterator.pList;
-//     this->current = iterator.current;
-//     this->index = iterator.index;
-//     return *this;
-// }
-
-
-
-// template <class T>
-// void SLinkedList<T>::Iterator::set(const T &e)
-// {
-//     if (current)
-//         current->data = e;
-// }
-
-// template <class T>
-// T &SLinkedList<T>::Iterator::operator*()
-// {
-//     if (current)
-//         return current->data;
-//     throw std::out_of_range("Iterator out of range");
-// }
-
-// template <class T>
-// bool SLinkedList<T>::Iterator::operator!=(const Iterator &iterator)
-// {
-//     return current != iterator.current;
-// }
-
-// template <class T>
-// void SLinkedList<T>::Iterator::remove() {
-//             if (this->current == nullptr) throw std::out_of_range("Segmentation fault!");
-
-//             if (this->index == 0) {
-//                 this->pList->removeAt(0);
-//                 this->current = nullptr;
-//                 this->index = -1;
-//             } else {
-//                 Node* tmp = this->pList->head;
-//                 for (int i = 0; i < this->index - 1; i++) tmp = tmp->next;
-//                 this->current = tmp;
-//                 this->pList->removeAt(this->index);
-//                 this->index = this->index - 1;
-//             }
-//         }
-
-// template <class T>
-// typename SLinkedList<T>::Iterator &SLinkedList<T>::Iterator::operator++()
-// {
-//     if (current)
-//     {
-//         current = current->next;
-//         index++;
-//     }
-//     return *this;
-// }
-
-// template <class T>
-// typename SLinkedList<T>::Iterator SLinkedList<T>::Iterator::operator++(int)
-// {
-//     Iterator temp = *this;
-//     ++(*this);
-//     return temp;
-// }
-
-    bool isMatch(string s, string p) {
-    int n = s.size(), m = p.size();
-    vector<vector<bool>>dp(n+1, vector<bool>(m+1,false));
-
-    dp[0][0]=true;
-
-    for(int i=0; i<=n; i++){
-        for(int j=1; j<=m; j++){
-            if(p[j-1] != '*'){
-                dp[i][j]=i>0 && (s[i-1]==p[j-1] || p[j-1]=='.') && dp[i-1][j-1];
-            } 
+    else if(value<root->data){
+        insertRecur(root->pLeft,value,taller);
+        if(taller==true){
+            if(root->balance==LH){
+                // can bang ben trai
+                left_balance(root);
+                taller=false;
+            }
+            else if(root->balance==EH){
+                root->balance=LH;
+            }
             else{
-                dp[i][j]=dp[i][j-2] || (i>0 && (s[i-1]==p[j-2] || p[j-2]=='.') && dp[i-1][j]);
+                root->balance=EH;
+                taller=false;
             }
         }
     }
-
-    return dp[n][m];
-    }
-
-int mininumBracketAdd(string s){
-    if(s.find("()")!=string::npos){
-        s.erase(s.find("()"),2);
-        return(mininumBracketAdd(s));
-    }
-    if(s.size()==0) return 0;
-    return s.size();
- 
-
-}
-
-// string reverseSentence(string s){
-//     if(s.size()==0) return "";
-//     if(s.size()==1) return s;
-    
-//     return s[s.size()-1]+reverseSentence(s.erase(s.size()-1,1));
-// }
-
-// vector<int> stock_span(const vector<int>& ns) {
-//     // STUDENT ANSWER
-//     vector<int> res;
-//     res.push_back(1);
-//     stack<int> st;  // luu index;
-//     st.push(0);
-//     for(unsigned int i=1;i<ns.size();i++){
-//         // bo cac so nho hon
-//         while(!st.empty()&& ns[st.top()]<=ns[i]){
-//             st.pop();
-//         }
-//         if(st.empty()){
-//             res.push_back(i+1);
-//         }
-//         else{
-//             res.push_back(i-st.top());
-//         }
-//         st.push(i);
-//     }
-//     return res;
-// }
-// iostream, vector and queue are included
-// You can write helper methods
-
-
-long long nthNiceNumber(int n) {
-    queue<string> q;
-    q.push("");
-    int k=0;
-    string s;
-    while(k!=n){
-        s=q.front()+'2';
-        k++;
-        if(k==n) break;
-        q.push(s);
-        s=q.front()+'5';
-        k++;
-        if(k==n) break;
-        q.push(s);
-        q.pop();
-    }
-    long long res=0;
-    for(auto digit: s){
-        res=res*10+ (digit-'0');
-    }
-    return res;
-}
-
-// iostream, vector and queue are included
-// Hint: use breadth-first-search
-
-int secondsToBeRotten(vector<vector<int>>& grid) {
-    // lưu số táo hỏng hiện tại
-    // số táo chưa hỏng
-    // duyệt hết số táo hỏng hiện tại
-    // thêm số bị làm hỏng
-    // khi duyệt hết táo hỏng hiện tại sẽ duyệt tiếp táo bị làm hỏng tiếp theo;
-    queue<int> x;
-    queue<int> y;
-    int countRotNow=0;
-    int day=0;
-    int countRotNext=0;
-    int countFresh=0;
-
-    int xAxis[]={0,1,0,-1};
-    int yAxis[]= {1,0,-1,0};
-    for(int i=0;i<grid.size();i++){
-        for(int j=0;j<grid[i].size();j++){
-            if(grid[i][j]==2){
-                countRotNow++;
-                grid[i][j]=0;
-                x.push(i);
-                y.push(j);
+    else{
+        insertRecur(root->pRight,value,taller);
+        if(taller==true){
+            if(root->balance==RH){
+                // can bang ben phai
+                right_balance(root);
+                taller= false;
             }
-            else if(grid[i][j]==1){
-                countFresh++;
+            else if(root->balance==EH){
+                root->balance=RH;
+            }
+            else{
+                root->balance=EH;
+                taller=false;
             }
         }
     }
-    while(!x.empty()){
-        countRotNow--;
-        for(int i=0;i<4;i++){
-            int xCoor=x.front()+xAxis[i];
-            int yCoor=y.front()+ yAxis[i];
-            if(xCoor>=0 && xCoor<grid.size() && yCoor>=0 && yCoor<grid[0].size() && grid[xCoor][yCoor]==1){
-                grid[xCoor][yCoor]=0;
-                x.push(xCoor);
-                y.push(yCoor);
-                countFresh--;
-                countRotNext++;
-            }
-        }
-        x.pop();
-        y.pop();
-        if(countRotNow==0 && countRotNext>0){
-            day++;
-            countRotNow=countRotNext;
-            countRotNext=0;
-        }
-    }
-    if(countFresh) return -1;
-    return day;
 }
-
-int sumOfMaxSubarray(vector<int>& nums, int k) {
-    // STUDENT ANSWER
-    int n=nums.size();
-    if(n<k){
-        return -1;
-    }
-    queue<int> q;
-    int sum=0;
-    int sumMax;
-    for(int i=0;i<k;i++){
-        q.push(nums[i]);
-        sum+=nums[i];
-    }
-    sumMax=sum;
-    for (int i=k;i<n;i++){
-        sum-=q.front();
-        q.pop();
-        sum+=nums[i];
-        q.push(nums[i]);
-        sumMax=max(sum,sumMax);
-    }
-    return sumMax;
+void insert(const T &value){
+    //TODO
+    // balance
+    // l-l
+    // r-l
+    bool taller=true;
+    insertRecur(root, value, taller);
 }
-
-
-static int* Partition(int* start, int* end) {
-    // TODO: return the pointer which points to the pivot after rearrange the array.
-    int* i=start+1;
-    int* j=end-1;
-    int index=end-start-1;
-    int tag=*start;
-    do{
-        while(i<=j && *i<=tag) i++;
-        while(i<=j && *j>=tag){
-            j--;
-            index--;
-        }
-        if(i<=j){
-            swap(*i,*j);
-            i++;
-            j--;
-            index--;
-            
-        }
-    }while(i<=j);
-    swap(*j,*start);
-    cout<<index<<" ";
-    return j;
-}
-
-static void QuickSort(int* start, int* end) {
+  void remove(const T &value)
+  {
+    printTreeStructure();
     // TODO
-    // In this question, you must print out the index of pivot in subarray after everytime calling method Partition.
-    if(end-start<1) return  ;
-    int* pivot=Partition(start,end);
-    QuickSort(start,pivot);
-    QuickSort(pivot+1,end);
-}
+    bool shorter = true;
+    root=removeRecur(root, value, shorter);
+  }
+  class Node
+  {
+  private:
+    T data;
+    Node *pLeft, *pRight;
+    BalanceValue balance;
+    friend class AVLTree<T>;
 
-
-
-
+  public:
+    Node(T value) : data(value), pLeft(NULL), pRight(NULL), balance(EH) {}
+    ~Node() {}
+  };
+};
 int main()
 {
-    int array[] = {3, 5, 7, 10, 12, 14, 15, 13, 1, 2, 9, 6, 4, 8, 11, 16, 17, 18, 20, 19};
-    cout << "Index of pivots: ";
-    QuickSort(&array[0], &array[20]);
-    cout << "\n";
-    cout << "Array after sorting: ";
-    for (int i : array)
-        cout << i << " ";
+
+	
+	
+	
+	
+AVLTree<int> avl;
+int arr[] = {20,10,40,5,7,42,2,6,15};
+for (int i = 0; i < 9; i++){
+  avl.insert(arr[i]);
+}
+avl.remove(6);
+avl.remove(42);
+avl.printTreeStructure();
 }

@@ -19,7 +19,6 @@ int maxNumberOfPeople(vector<int>& rooms, vector<int>& people, int k) {
             res++;
             index++;
         }
-
     }
     return res;
 }

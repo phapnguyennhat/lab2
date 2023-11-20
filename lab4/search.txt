@@ -1,0 +1,21 @@
+void printInOrderRecur(Node* root){
+    if(root==NULL) return;
+    
+    printInOrderRecur(root->pLeft);
+    cout<<root->data<<" ";
+    printInOrderRecur(root->pRight);
+}
+void printInorder(){
+    printInOrderRecur(root);
+}
+bool searchRecur(Node* root,const T& value){
+    if(root==NULL) return false ;
+    if(value==root->data) return true;
+    else if(value<root->data) return searchRecur(root->pLeft,value);
+    else if(value>root->data) return searchRecur(root->pRight,value);
+    return false;
+}
+bool search(const T &value){
+        //TODO
+    return searchRecur(root,value);
+}

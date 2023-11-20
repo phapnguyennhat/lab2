@@ -1,0 +1,17 @@
+Node* rotateRight(Node* root) {
+    //TODO: Rotate and return new root after rotate
+    Node* left_tree=root->pLeft;
+    root->pLeft=left_tree->pRight;
+    left_tree->pRight=root;
+    root=left_tree;
+    return root;
+}
+
+Node* rotateLeft(Node* root) {
+    //TODO: Rotate and return new root after rotate
+    Node* right_tree=root->pRight;
+    root->pRight=right_tree->pLeft;
+    right_tree->pLeft=root;
+    root=right_tree;
+    return root;
+}

@@ -54,7 +54,6 @@ static void TimSort(T* start, T* end, int min_size) {
                 merge(start+left,start+mid,start+right);
                 printArray(start,end);
             }
-        
         }
     }
     

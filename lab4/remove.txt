@@ -1,0 +1,148 @@
+  void right_balance(Node *&root)
+  {
+    Node *right_tree = root->pRight;
+    if (right_tree->balance == RH)
+    {
+      root->balance = EH;
+      right_tree->balance = EH;
+      root=rotateLeft(root);
+    }
+    else if (right_tree->balance == LH)
+    {
+      Node *sub_tree = right_tree->pLeft;
+      if (sub_tree->balance == EH)
+      {
+        root->balance = EH;
+        right_tree->balance = EH;
+      }
+      else if (sub_tree->balance == LH)
+      {
+        right_tree->balance = RH;
+        root->balance = EH;
+      }
+      else if (sub_tree->balance == RH)
+      {
+        right_tree->balance = EH;
+        root->balance = LH;
+      }
+      sub_tree->balance = EH;
+      root->pRight=rotateRight(root->pRight);
+      root=rotateLeft(root);
+    }
+    else if (right_tree->balance == EH && right_tree->pLeft != NULL && right_tree->pRight != NULL)
+    {
+      root->balance=RH;
+      right_tree->balance=LH;
+      root=rotateLeft(root);
+    }
+  }
+  void left_balance(Node *&root)
+  {
+    Node *left_tree = root->pLeft;
+    if (left_tree->balance == LH)
+    {
+      root->balance = EH;
+      left_tree->balance = EH;
+      root=rotateRight(root);
+    }
+    else if (left_tree->balance == RH)
+    {
+      Node *sub_tree = left_tree->pRight;
+      if (sub_tree->balance == EH)
+      {
+        left_tree->balance = EH;
+        root->balance = EH;
+      }
+      else if (sub_tree->balance == LH)
+      {
+        left_tree->balance = EH;
+        root->balance = RH;
+      }
+      else
+      {
+        root->balance = EH;
+        left_tree->balance = LH;
+      }
+      sub_tree->balance = EH;
+      root->pLeft=rotateLeft(root->pLeft);
+      root=rotateRight(root);
+    }
+    else if(left_tree->balance==EH&&left_tree->pLeft!=NULL&&left_tree->pRight!=NULL){
+      root->balance=LH;
+      left_tree->balance=RH;
+      root=rotateRight(root);
+    }
+  }
+  // Helping functions
+  Node* maxValueNode(Node* root){
+    while(root->pRight!=NULL){
+      root=root->pRight;
+    }
+    return root;
+  }
+  Node* removeRecur(Node* root,const T& value,bool& shorter){
+    if(root==NULL){
+      shorter=false;
+      return root;
+    }
+    else if(value<root->data){
+      root->pLeft=removeRecur(root->pLeft,value,shorter);
+      if(shorter==true){
+        // xoa trai
+        if(root->balance==RH){
+          right_balance(root);
+          shorter=false;
+        }
+        else if(root->balance==EH){
+          root->balance=RH;
+          shorter=false;
+        }
+        else{
+          root->balance=EH;
+        }
+      }
+    }
+    else if(value>root->data){
+      root->pRight=removeRecur(root->pRight,value,shorter);
+      if(shorter==true){
+        if(root->balance==LH){
+          left_balance(root);
+          shorter=false;
+        }
+        else if(root->balance==EH){
+          root->balance=LH;
+          shorter=false;
+        }
+        else{
+          root->balance=EH;
+        }
+      }
+    }
+    else{
+      if(root->pLeft==NULL){
+        shorter=true;
+        Node* tmp=root->pRight;
+        delete root;
+        return tmp;
+      }
+      else if(root->pRight==NULL){
+        shorter=true;
+        Node* tmp=root->pLeft;
+        delete root;
+        return tmp;
+      }
+      else{
+        Node* tmp=maxValueNode(root->pLeft);
+        root->data=tmp->data;
+        root->pLeft=removeRecur(root->pLeft,tmp->data,shorter);
+      }
+    }
+    return root;
+  }
+    void remove(const T &value)
+  {
+    // printTreeStructure();
+    // TODO
+    bool shorter = true;
+    root=removeRecur(root, value, shorter);
+  }

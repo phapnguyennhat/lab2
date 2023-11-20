@@ -1,0 +1,20 @@
+/// BEGIN STUDENT CODE
+
+// You may need some helping functions here
+void toStringPreOrderRecur(Node* root,string& res){
+    if(root==NULL) return;
+    res=res+root->toString()+" ";
+    toStringPreOrderRecur(root->firstPtr,res);
+    for(int i=0;i<root->numEntries;i++){
+        toStringPreOrderRecur(root->entries[i].rightPtr,res);
+    }
+    
+}
+
+
+string toStringPreOrder() {
+    string res;
+    toStringPreOrderRecur(root,res);
+    return res;
+}
+/// END STUDENT CODE

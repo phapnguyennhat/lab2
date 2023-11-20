@@ -16,7 +16,5 @@ void BFS()
             q.push(qfront->pRight);
         }
     }
-    
-
 }
 // STUDENT ANSWER END

@@ -1,0 +1,28 @@
+/// BEGIN STUDENT CODE
+/// ======================================================
+// You may need some helping functions here
+bool searchRecur(const K& key, Node*& outNodePtr, int& outEntryIdx){
+    if(outNodePtr==NULL) return false;
+    if(key<outNodePtr->entries[outEntryIdx].key){
+        outNodePtr=(outEntryIdx==0)? outNodePtr->firstPtr:outNodePtr->entries[outEntryIdx-1].rightPtr;
+        outEntryIdx=0;
+        return searchRecur(key,outNodePtr,outEntryIdx);
+    }
+    else if(key==outNodePtr->entries[outEntryIdx].key) return true;
+    else{
+        outEntryIdx++;
+        if(outEntryIdx==outNodePtr->numEntries){
+            outNodePtr=outNodePtr->entries[outEntryIdx-1].rightPtr;
+            outEntryIdx=0;
+        }
+        return searchRecur(key,outNodePtr,outEntryIdx);
+    }
+    return false;
+}
+
+bool search(const K& key, Node*& outNodePtr, int& outEntryIdx) {
+    outNodePtr=root;
+    outEntryIdx=0;
+    return searchRecur(key,outNodePtr,outEntryIdx);
+}
+/// END STUDENT CODE
