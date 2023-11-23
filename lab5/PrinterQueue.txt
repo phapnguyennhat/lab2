@@ -1,0 +1,40 @@
+class PrinterQueue
+{
+    // your attributes
+    vector<string> file;
+    vector<int> p;
+public:
+    // your methods
+    
+
+    void addNewRequest(int priority, string fileName)
+    {
+        // your code here
+      file.push_back(fileName);
+      p.push_back(priority);
+      if(file.size()==1) return;
+      int current=file.size()-1;
+      int walker=current-1;
+      while(walker>=0 && priority<=p[walker]){
+        p[walker+1]=p[walker];
+        file[walker+1]=file[walker];
+        walker--;
+      }
+      file[walker+1]=fileName;
+      p[walker+1]=priority;
+    }
+
+    void print()
+    {
+        // your code here
+        // After some logic code, you have to print fileName with endline 
+      if(file.size()==0){
+        cout<<"No file to print"<<endl;
+      }
+      else{
+        cout<<file[file.size()-1]<<endl;
+        file.pop_back();
+        p.pop_back();
+      }
+    }
+};

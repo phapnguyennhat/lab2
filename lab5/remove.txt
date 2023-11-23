@@ -1,0 +1,31 @@
+template<class T>
+int Heap<T>::getItem(T item) {
+    // TODO: return the index of item in heap
+    int res=-1;
+    for(int i=0;i<count;i++){
+        if(elements[i]==item) res=i;
+    }
+    return res;
+}
+
+template<class T>
+void Heap<T>::remove(T item) {
+    // TODO: remove the element with value equal to item
+    int pos=getItem(item);
+    if(pos==-1) return;
+    if(count==0) return;
+    swap(elements[pos],elements[count-1]);
+    count--;
+    reheapDown(pos);
+    reheapUp(pos);
+}
+
+template<class T>
+void Heap<T>::clear() {
+    // TODO: delete all elements in heap
+    //    then reallocate memory as initial state
+    delete[]elements;
+    this->capacity = 10;
+    this->count = 0;
+    this->elements = new T[capacity];
+}

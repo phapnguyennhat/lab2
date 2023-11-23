@@ -1,0 +1,30 @@
+int jumpSearch(int arr[], int x, int n) {
+    // TODO: print the traversed indexes and return the index of value x in array if x is found, otherwise, return -1.
+    int end=0;
+    int m=int(sqrt(n));
+    int start=0;
+    cout<<end<<" ";
+    if(arr[end]==x) return end;
+    end+=m;
+    while(arr[min(end,n-1)]<x && end<n){
+        //cout<<" ";
+        if(end>=n)  return -1;
+        start=end;
+        cout<<min(end,n-1)<<" ";
+        end+=m;
+    }
+    if(end>=n){
+        end=n;
+    }
+    else{
+        cout<<end<<" ";
+        if(arr[end]==x) return end;
+        
+    }
+    for(int i=start+1;i<end;i++){
+        cout<<i<<" ";
+        if(arr[i]==x) return i;
+    }
+    if(end==n) cout<<end<<" ";
+    return -1;
+}

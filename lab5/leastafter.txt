@@ -1,0 +1,12 @@
+int leastAfter(vector<int>& nums, int k) {
+    // STUDENT ANSWER
+    multiset<int> s(nums.begin(),nums.end());
+    multiset<int> ::iterator it=s.begin();
+
+    for(int i=0;i<k;i++){
+        s.insert(*it*2);
+        s.erase(it);
+        it=s.begin();
+    }
+    return *it;
+}
