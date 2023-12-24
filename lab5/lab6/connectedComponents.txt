@@ -1,0 +1,24 @@
+int connectedComponents(vector<vector<int>>& edges) {
+    // STUDENT ANSWER
+  vector<bool> visited(edges.size(),false);
+  queue<int> q;
+  int res=0;
+  for(unsigned int i=0;i<edges.size();i++){
+    // dinh
+    if(visited[i]==true) continue;
+    q.push(i);
+    while(!q.empty()){
+      int qfront=q.front();
+      q.pop();
+      visited[qfront]=true;
+      for(unsigned int j=0;j<edges[qfront].size();j++){
+        if(visited[edges[qfront][j]]==false){
+          visited[edges[qfront][j]]=true;
+          q.push(edges[qfront][j]);
+        }
+      }
+    }
+    res++;
+  }
+  return res;
+}

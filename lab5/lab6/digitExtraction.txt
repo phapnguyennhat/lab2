@@ -1,0 +1,17 @@
+long int midSquare(long int seed)
+{
+    return ((seed*seed)/100) %10000;
+}
+long int moduloDivision(long int seed, long int mod)
+{
+  return seed%mod;
+}
+long int digitExtraction(long int seed,int* extractDigits,int size)
+{
+  string str_seed=to_string(seed);
+  string str_res="";
+  for(int i=0;i<size;i++){
+    str_res+=str_seed.substr(extractDigits[i],1);
+  }
+  return stoi(str_res);
+}

@@ -1,0 +1,41 @@
+#include<vector>
+#include<stack>
+class Graph {
+
+    int V;
+    Adjacency* adj;
+
+public:
+    Graph(int V){
+        this->V = V;
+        adj = new Adjacency[V];
+    }
+    void addEdge(int v, int w){
+        adj[v].push(w);
+    }
+    
+    //Heling functions
+    
+   void topoRecur(int v, vector<bool> &visited, stack<int> &st)
+    {
+      visited[v] = true;
+      for(int i=0;i<adj[v].getSize();i++){
+        int getItem=adj[v].getElement(i);
+        if(!visited[getItem]) topoRecur(getItem,visited,st);
+      }
+      st.push(v);
+    }
+  void topologicalSort()
+  {
+    // TODO
+    vector<bool> visited(V,false);
+    stack<int> st;
+    for(int i=0;i<V;i++){
+      if(!visited[i]) topoRecur(i,visited,st);
+    }
+    while(!st.empty()){
+      cout<<st.top()<<" ";
+      st.pop();
+    }
+  }
+};

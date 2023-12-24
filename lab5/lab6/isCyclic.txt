@@ -1,0 +1,21 @@
+  bool DFSSearch(int i, vector<bool>& visited, vector<bool> & recStack)
+  {
+    if(visited[i]==false){
+    visited[i]=true;
+    recStack[i]=true;
+    for(list<int>:: iterator it=adj[i].begin();it!=adj[i].end();it++){
+      if(!visited[*it] && DFSSearch(*it,visited,recStack)) return true;
+      else if(recStack[*it]) return true;
+    }
+    }
+    recStack[i]=false;
+    return false;
+  }
+  bool isCyclic(){
+    vector<bool> visited(V,false);
+    vector<bool> recStack(V,false);
+    for(int i=0;i<V;i++){
+      if(!visited[i] && DFSSearch(i,visited,recStack)) return true;
+    }
+    return false;
+  }
